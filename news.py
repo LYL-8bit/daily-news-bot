@@ -13,29 +13,29 @@ BJT = timezone(timedelta(hours=8))
 # RSS 新闻源
 RSS_SOURCES = [
     # AI / 科技
-    {"name": "Hacker News",             "url": "https://news.ycombinator.com/rss",                    "category": "💻 计算机 & 开发"},
-    {"name": "TechCrunch",              "url": "https://techcrunch.com/feed/",                         "category": "🤖 AI & 科技"},
-    {"name": "The Verge",               "url": "https://www.theverge.com/rss/index.xml",               "category": "🤖 AI & 科技"},
-    {"name": "Ars Technica",            "url": "https://feeds.arstechnica.com/arstechnica/index",       "category": "🤖 AI & 科技"},
-    {"name": "VentureBeat AI",          "url": "https://venturebeat.com/category/ai/feed/",            "category": "🤖 AI & 科技"},
-    {"name": "MIT Technology Review",   "url": "https://www.technologyreview.com/feed/",               "category": "🤖 AI & 科技"},
-    {"name": "Wired",                   "url": "https://www.wired.com/feed/rss",                       "category": "🤖 AI & 科技"},
-    {"name": "IEEE Spectrum",           "url": "https://spectrum.ieee.org/feeds/feed.rss",             "category": "💻 计算机 & 开发"},
+    {"name": "Hacker News",           "url": "https://news.ycombinator.com/rss",                 "category": "💻 计算机 & 开发"},
+    {"name": "TechCrunch",            "url": "https://techcrunch.com/feed/",                      "category": "🤖 AI & 科技"},
+    {"name": "The Verge",             "url": "https://www.theverge.com/rss/index.xml",            "category": "🤖 AI & 科技"},
+    {"name": "Ars Technica",          "url": "https://feeds.arstechnica.com/arstechnica/index",   "category": "🤖 AI & 科技"},
+    {"name": "VentureBeat AI",        "url": "https://venturebeat.com/category/ai/feed/",         "category": "🤖 AI & 科技"},
+    {"name": "MIT Technology Review", "url": "https://www.technologyreview.com/feed/",            "category": "🤖 AI & 科技"},
+    {"name": "Wired",                 "url": "https://www.wired.com/feed/rss",                    "category": "🤖 AI & 科技"},
+    {"name": "IEEE Spectrum",         "url": "https://spectrum.ieee.org/feeds/feed.rss",          "category": "💻 计算机 & 开发"},
     # 国际时事
-    {"name": "Reuters",                 "url": "https://feeds.reuters.com/reuters/topNews",            "category": "🌍 国际时事"},
-    {"name": "AP News",                 "url": "https://feeds.apnews.com/rss/apf-topnews",             "category": "🌍 国际时事"},
-    {"name": "BBC News",                "url": "https://feeds.bbci.co.uk/news/rss.xml",                "category": "🌍 国际时事"},
-    {"name": "Al Jazeera",              "url": "https://www.aljazeera.com/xml/rss/all.xml",            "category": "🌍 国际时事"},
-    {"name": "The Guardian World",      "url": "https://www.theguardian.com/world/rss",                "category": "🌍 国际时事"},
-    {"name": "DW News",                 "url": "https://rss.dw.com/rdf/rss-en-all",                   "category": "🌍 国际时事"},
-    {"name": "France 24",               "url": "https://www.france24.com/en/rss",                     "category": "🌍 国际时事"},
-    {"name": "NPR World",               "url": "https://feeds.npr.org/1004/rss.xml",                  "category": "🌍 国际时事"},
+    {"name": "Reuters",               "url": "https://feeds.reuters.com/reuters/topNews",         "category": "🌍 国际时事"},
+    {"name": "AP News",               "url": "https://feeds.apnews.com/rss/apf-topnews",          "category": "🌍 国际时事"},
+    {"name": "BBC News",              "url": "https://feeds.bbci.co.uk/news/rss.xml",             "category": "🌍 国际时事"},
+    {"name": "Al Jazeera",            "url": "https://www.aljazeera.com/xml/rss/all.xml",         "category": "🌍 国际时事"},
+    {"name": "The Guardian World",    "url": "https://www.theguardian.com/world/rss",             "category": "🌍 国际时事"},
+    {"name": "DW News",               "url": "https://rss.dw.com/rdf/rss-en-all",                "category": "🌍 国际时事"},
+    {"name": "France 24",             "url": "https://www.france24.com/en/rss",                  "category": "🌍 国际时事"},
+    {"name": "NPR World",             "url": "https://feeds.npr.org/1004/rss.xml",               "category": "🌍 国际时事"},
     # 科学
-    {"name": "New Scientist",           "url": "https://www.newscientist.com/feed/home/",              "category": "🔬 科学"},
-    {"name": "Science Daily",           "url": "https://www.sciencedaily.com/rss/top/science.xml",    "category": "🔬 科学"},
+    {"name": "New Scientist",         "url": "https://www.newscientist.com/feed/home/",           "category": "🔬 科学"},
+    {"name": "Science Daily",         "url": "https://www.sciencedaily.com/rss/top/science.xml", "category": "🔬 科学"},
     # 中文补充
-    {"name": "BBC 中文",                "url": "https://feeds.bbci.co.uk/zhongwen/simp/rss.xml",       "category": "🌍 国际时事"},
-    {"name": "RFI 中文",                "url": "https://www.rfi.fr/cn/rss",                           "category": "🌍 国际时事"},
+    {"name": "BBC 中文",              "url": "https://feeds.bbci.co.uk/zhongwen/simp/rss.xml",    "category": "🌍 国际时事"},
+    {"name": "RFI 中文",              "url": "https://www.rfi.fr/cn/rss",                        "category": "🌍 国际时事"},
 ]
 
 # ==================== 测试模式 ====================
@@ -68,22 +68,19 @@ def test_sources():
 
 def fetch_news():
     now = datetime.now(BJT)
-    # 判断是早报还是晚报
     if now.hour < 16:
         period = "早报"
         icon = "🌅"
-        cutoff = now - timedelta(hours=12)
     else:
         period = "晚报"
         icon = "🌙"
-        cutoff = now - timedelta(hours=12)
+    cutoff = now - timedelta(hours=12)
 
     articles = []
     for source in RSS_SOURCES:
         try:
             feed = feedparser.parse(source["url"])
-            for entry in feed.entries[:20]:  # 每个源最多取20条
-                # 解析时间
+            for entry in feed.entries[:20]:
                 pub_time = None
                 if hasattr(entry, "published"):
                     try:
@@ -93,7 +90,6 @@ def fetch_news():
                     except:
                         pass
 
-                # 过滤时间窗口
                 if pub_time and pub_time < cutoff.astimezone(timezone.utc):
                     continue
 
@@ -121,21 +117,22 @@ def call_grok(articles):
     if not api_key:
         raise ValueError("未找到 GROK_API_KEY")
 
-    # 构建文章列表文本
+    # 全部文章都送给 Grok
     article_text = ""
-    for i, a in enumerate(articles[:60], 1):  # 最多送60条给Grok
+    for i, a in enumerate(articles, 1):
         article_text += f"{i}. [{a['source']}] {a['title']}\n"
         if a["summary"]:
             article_text += f"   摘要：{a['summary']}\n"
         article_text += f"   链接：{a['link']}\n\n"
 
     prompt = f"""你是一个新闻编辑助手。以下是从英文媒体抓取的最新新闻，请帮我：
-1. 从中筛选出最有价值、最重要的15条（优先选择：AI/科技进展、国际重大事件、科技行业动态）
-2. 过滤掉低价值内容（娱乐八卦、体育、重复新闻）
+1. 从中筛选出最有价值、最重要的15条（优先选择：AI/科技进展、国际重大事件、科技行业动态、科学发现）
+2. 过滤掉低价值内容（娱乐八卦、体育赛事、重复新闻只保留一条）
 3. 将标题和摘要翻译成中文
-4. 按以下三个分类整理输出：🤖 AI & 科技 / 🌍 国际时事 / 💻 计算机 & 开发
-5. 每条新闻格式：• 中文标题 — 2-3句中文摘要,包含关键数据或影响 [原文链接]
+4. 按以下四个分类整理输出：🤖 AI & 科技 / 🌍 国际时事 / 💻 计算机 & 开发 / 🔬 科学
+5. 每条新闻格式：• 中文标题 — 2-3句中文摘要，包含关键数据或影响 链接：原文URL
 
+注意：链接直接输出原始URL，不要用Markdown格式包裹。
 只输出整理好的新闻内容，不要有多余的解释。
 
 新闻列表：
@@ -166,32 +163,26 @@ def send_telegram(text):
     if not token or not chat_id:
         raise ValueError("未找到 Telegram 配置")
 
-    # 清理特殊字符
-    text = text.replace("&", "&amp;")
-
-    # 超过4000字符自动分段
     max_len = 4000
     chunks = [text[i:i+max_len] for i in range(0, len(text), max_len)]
 
     for chunk in chunks:
-        payload = {
-            "chat_id": chat_id,
-            "text": chunk,
-            "disable_web_page_preview": True,
-        }
-        print(f"发送内容前200字：{chunk[:200]}")
         resp = requests.post(
             f"https://api.telegram.org/bot{token}/sendMessage",
-            json=payload,
+            json={
+                "chat_id": chat_id,
+                "text": chunk,
+                "disable_web_page_preview": True,
+            },
             timeout=30,
         )
-        print(f"Telegram响应：{resp.status_code} {resp.text}")
+        if not resp.ok:
+            print(f"Telegram发送失败：{resp.status_code}")
         resp.raise_for_status()
 
 # ==================== 主程序 ====================
 
 def main():
-    # 测试模式
     if "--test" in sys.argv:
         test_sources()
         return
