@@ -13,20 +13,29 @@ BJT = timezone(timedelta(hours=8))
 # RSS 新闻源
 RSS_SOURCES = [
     # AI / 科技
-    {"name": "Hacker News",             "url": "https://news.ycombinator.com/rss", "category": "💻 计算机 & 开发"},
-    {"name": "TechCrunch",              "url": "https://techcrunch.com/feed/", "category": "🤖 AI & 科技"},
-    {"name": "The Verge",               "url": "https://www.theverge.com/rss/index.xml", "category": "🤖 AI & 科技"},
-    {"name": "Ars Technica",            "url": "https://feeds.arstechnica.com/arstechnica/index", "category": "🤖 AI & 科技"},
-    {"name": "VentureBeat AI",          "url": "https://venturebeat.com/category/ai/feed/", "category": "🤖 AI & 科技"},
-    {"name": "MIT Technology Review",   "url": "https://www.technologyreview.com/feed/", "category": "🤖 AI & 科技"},
+    {"name": "Hacker News",             "url": "https://news.ycombinator.com/rss",                    "category": "💻 计算机 & 开发"},
+    {"name": "TechCrunch",              "url": "https://techcrunch.com/feed/",                         "category": "🤖 AI & 科技"},
+    {"name": "The Verge",               "url": "https://www.theverge.com/rss/index.xml",               "category": "🤖 AI & 科技"},
+    {"name": "Ars Technica",            "url": "https://feeds.arstechnica.com/arstechnica/index",       "category": "🤖 AI & 科技"},
+    {"name": "VentureBeat AI",          "url": "https://venturebeat.com/category/ai/feed/",            "category": "🤖 AI & 科技"},
+    {"name": "MIT Technology Review",   "url": "https://www.technologyreview.com/feed/",               "category": "🤖 AI & 科技"},
+    {"name": "Wired",                   "url": "https://www.wired.com/feed/rss",                       "category": "🤖 AI & 科技"},
+    {"name": "IEEE Spectrum",           "url": "https://spectrum.ieee.org/feeds/feed.rss",             "category": "💻 计算机 & 开发"},
     # 国际时事
-    {"name": "Reuters",                 "url": "https://feeds.reuters.com/reuters/topNews", "category": "🌍 国际时事"},
-    {"name": "AP News",                 "url": "https://feeds.apnews.com/rss/apf-topnews", "category": "🌍 国际时事"},
-    {"name": "BBC News",                "url": "https://feeds.bbci.co.uk/news/rss.xml", "category": "🌍 国际时事"},
-    {"name": "Al Jazeera",              "url": "https://www.aljazeera.com/xml/rss/all.xml", "category": "🌍 国际时事"},
+    {"name": "Reuters",                 "url": "https://feeds.reuters.com/reuters/topNews",            "category": "🌍 国际时事"},
+    {"name": "AP News",                 "url": "https://feeds.apnews.com/rss/apf-topnews",             "category": "🌍 国际时事"},
+    {"name": "BBC News",                "url": "https://feeds.bbci.co.uk/news/rss.xml",                "category": "🌍 国际时事"},
+    {"name": "Al Jazeera",              "url": "https://www.aljazeera.com/xml/rss/all.xml",            "category": "🌍 国际时事"},
+    {"name": "The Guardian World",      "url": "https://www.theguardian.com/world/rss",                "category": "🌍 国际时事"},
+    {"name": "DW News",                 "url": "https://rss.dw.com/rdf/rss-en-all",                   "category": "🌍 国际时事"},
+    {"name": "France 24",               "url": "https://www.france24.com/en/rss",                     "category": "🌍 国际时事"},
+    {"name": "NPR World",               "url": "https://feeds.npr.org/1004/rss.xml",                  "category": "🌍 国际时事"},
+    # 科学
+    {"name": "New Scientist",           "url": "https://www.newscientist.com/feed/home/",              "category": "🔬 科学"},
+    {"name": "Science Daily",           "url": "https://www.sciencedaily.com/rss/top/science.xml",    "category": "🔬 科学"},
     # 中文补充
-    {"name": "BBC 中文",                "url": "https://feeds.bbci.co.uk/zhongwen/simp/rss.xml", "category": "🌍 国际时事"},
-    {"name": "RFI 中文",                "url": "https://www.rfi.fr/cn/rss", "category": "🌍 国际时事"},
+    {"name": "BBC 中文",                "url": "https://feeds.bbci.co.uk/zhongwen/simp/rss.xml",       "category": "🌍 国际时事"},
+    {"name": "RFI 中文",                "url": "https://www.rfi.fr/cn/rss",                           "category": "🌍 国际时事"},
 ]
 
 # ==================== 测试模式 ====================
@@ -121,11 +130,11 @@ def call_grok(articles):
         article_text += f"   链接：{a['link']}\n\n"
 
     prompt = f"""你是一个新闻编辑助手。以下是从英文媒体抓取的最新新闻，请帮我：
-1. 从中筛选出最有价值、最重要的10条（优先选择：AI/科技进展、国际重大事件、科技行业动态）
+1. 从中筛选出最有价值、最重要的15条（优先选择：AI/科技进展、国际重大事件、科技行业动态）
 2. 过滤掉低价值内容（娱乐八卦、体育、重复新闻）
 3. 将标题和摘要翻译成中文
 4. 按以下三个分类整理输出：🤖 AI & 科技 / 🌍 国际时事 / 💻 计算机 & 开发
-5. 每条新闻格式：• 中文标题 — 1-2句中文摘要 [原文链接]
+5. 每条新闻格式：• 中文标题 — 2-3句中文摘要 [原文链接]
 
 只输出整理好的新闻内容，不要有多余的解释。
 
