@@ -144,7 +144,7 @@ def call_grok(articles):
             "max_tokens": 2000,
             "temperature": 0.3,
         },
-        timeout=60,
+        timeout=300,
     )
     response.raise_for_status()
     return response.json()["choices"][0]["message"]["content"]
