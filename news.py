@@ -157,23 +157,27 @@ def send_telegram(text):
     if not token or not chat_id:
         raise ValueError("未找到 Telegram 配置")
 
+    # 清理特殊字符
+    text = text.replace("&", "&amp;")
+
     # 超过4000字符自动分段
     max_len = 4000
     chunks = [text[i:i+max_len] for i in range(0, len(text), max_len)]
 
     for chunk in chunks:
+        payload = {
+            "chat_id": chat_id,
+            "text": chunk,
+            "disable_web_page_preview": True,
+        }
+        print(f"发送内容前200字：{chunk[:200]}")
         resp = requests.post(
             f"https://api.telegram.org/bot{token}/sendMessage",
-            json={
-                "chat_id": chat_id,
-                "text": chunk,
-                "parse_mode": "",
-                "disable_web_page_preview": True,
-            },
+            json=payload,
             timeout=30,
         )
+        print(f"Telegram响应：{resp.status_code} {resp.text}")
         resp.raise_for_status()
-        print(f"Telegram响应：{resp.text}")
 
 # ==================== 主程序 ====================
 
