@@ -98,12 +98,19 @@ def fetch_news():
                 summary = entry.get("summary", "")[:300].strip()
 
                 if title and link:
+                    # 格式化发布时间
+                    if pub_time:
+                        pub_bjt = pub_time.astimezone(BJT)
+                        pub_str = pub_bjt.strftime("%m-%d %H:%M")
+                    else:
+                        pub_str = "时间未知"
                     articles.append({
                         "source": source["name"],
                         "category": source["category"],
                         "title": title,
                         "link": link,
                         "summary": summary,
+                        "pub_time": pub_str,
                     })
         except Exception as e:
             print(f"抓取 {source['name']} 失败：{e}")
@@ -120,7 +127,7 @@ def call_grok(articles):
     # 全部文章都送给 Grok
     article_text = ""
     for i, a in enumerate(articles, 1):
-        article_text += f"{i}. [{a['source']}] {a['title']}\n"
+        article_text += f"{i}. [{a['source']}] [{a['pub_time']}] {a['title']}\n"
         if a["summary"]:
             article_text += f"   摘要：{a['summary']}\n"
         article_text += f"   链接：{a['link']}\n\n"
@@ -132,7 +139,7 @@ prompt = f"""你是一个新闻编辑助手，同时也是一个擅长发现商�
 2. 过滤掉低价值内容（娱乐八卦、体育赛事、重复新闻只保留一条）
 3. 将标题和摘要翻译成中文
 4. 按以下四个分类整理输出：🤖 AI & 科技 / 🌍 国际时事 / 💻 计算机 & 开发 / 🔬 科学
-5. 每条新闻格式：• 中文标题 — 2-3句中文摘要，包含关键数据或影响 链接：原文URL
+5. 每条新闻格式：• 中文标题 — 2-3句中文摘要，包含关键数据或影响 链接：原文URL 时间：发布时间
 6. 链接直接输出原始URL，不要用Markdown格式包裹
 
 【任务二：机会分析】
