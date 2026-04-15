@@ -173,6 +173,7 @@ def send_telegram(text):
             timeout=30,
         )
         resp.raise_for_status()
+        print(f"Telegram响应：{resp.text}")
 
 # ==================== 主程序 ====================
 
