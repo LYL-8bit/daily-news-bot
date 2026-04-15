@@ -167,7 +167,7 @@ def send_telegram(text):
             json={
                 "chat_id": chat_id,
                 "text": chunk,
-                "parse_mode": "Markdown",
+                "parse_mode": "",
                 "disable_web_page_preview": True,
             },
             timeout=30,
