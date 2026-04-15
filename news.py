@@ -134,7 +134,7 @@ def call_grok(articles):
 2. 过滤掉低价值内容（娱乐八卦、体育、重复新闻）
 3. 将标题和摘要翻译成中文
 4. 按以下三个分类整理输出：🤖 AI & 科技 / 🌍 国际时事 / 💻 计算机 & 开发
-5. 每条新闻格式：• 中文标题 — 2-3句中文摘要 [原文链接]
+5. 每条新闻格式：• 中文标题 — 2-3句中文摘要,包含关键数据或影响 [原文链接]
 
 只输出整理好的新闻内容，不要有多余的解释。
 
@@ -148,9 +148,9 @@ def call_grok(articles):
             "Content-Type": "application/json",
         },
         json={
-            "model": "grok-3-fast",
+            "model": "grok-4-1-fast-non-reasoning",
             "messages": [{"role": "user", "content": prompt}],
-            "max_tokens": 2000,
+            "max_tokens": 4000,
             "temperature": 0.3,
         },
         timeout=300,
