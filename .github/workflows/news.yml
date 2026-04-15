@@ -1,0 +1,29 @@
+name: Daily News Bot
+
+on:
+  schedule:
+    - cron: '0 2 * * *'   # 北京时间早上10点
+    - cron: '0 14 * * *'  # 北京时间晚上22点
+  workflow_dispatch:        # 允许手动触发（用于测试）
+
+jobs:
+  send-news:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖
+        run: pip install -r requirements.txt
+
+      - name: 运行新闻推送
+        env:
+          GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python news.py
