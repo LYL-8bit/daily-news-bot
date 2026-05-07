@@ -2,7 +2,6 @@ name: Daily News Bot
 
 on:
   schedule:
-    - cron: '0 2 * * *'   # 北京时间早上10点
     - cron: '0 14 * * *'  # 北京时间晚上22点
   workflow_dispatch:        # 允许手动触发（用于测试）
 
