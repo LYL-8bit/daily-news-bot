@@ -10,6 +10,11 @@ from dateutil import parser as dateparser
 BJT = timezone(timedelta(hours=8))
 
 RSS_SOURCES = [
+    {"name": "CNBC Top News",          "url": "https://www.cnbc.com/id/100003114/device/rss/rss.html",       "category": "📈 美股 & 商业"},
+    {"name": "CNBC Technology",        "url": "https://www.cnbc.com/id/19854910/device/rss/rss.html",        "category": "📈 美股 & 商业"},
+    {"name": "MarketWatch Top",        "url": "https://feeds.content.dowjones.io/public/rss/mw_topstories",  "category": "📈 美股 & 商业"},
+    {"name": "MarketWatch Pulse",      "url": "https://feeds.content.dowjones.io/public/rss/mw_marketpulse", "category": "📈 美股 & 商业"},
+    {"name": "Yahoo Finance",          "url": "https://finance.yahoo.com/news/rssindex",                    "category": "📈 美股 & 商业"},
     {"name": "Hacker News",           "url": "https://news.ycombinator.com/rss",                 "category": "💻 计算机 & 开发"},
     {"name": "TechCrunch",            "url": "https://techcrunch.com/feed/",                      "category": "🤖 AI & 科技"},
     {"name": "The Verge",             "url": "https://www.theverge.com/rss/index.xml",            "category": "🤖 AI & 科技"},
@@ -17,6 +22,7 @@ RSS_SOURCES = [
     {"name": "VentureBeat AI",        "url": "https://venturebeat.com/category/ai/feed/",         "category": "🤖 AI & 科技"},
     {"name": "MIT Technology Review", "url": "https://www.technologyreview.com/feed/",            "category": "🤖 AI & 科技"},
     {"name": "Wired",                 "url": "https://www.wired.com/feed/rss",                    "category": "🤖 AI & 科技"},
+    {"name": "NYTimes Technology",     "url": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml", "category": "🤖 AI & 科技"},
     {"name": "IEEE Spectrum",         "url": "https://spectrum.ieee.org/feeds/feed.rss",          "category": "💻 计算机 & 开发"},
     {"name": "Reuters",               "url": "https://feeds.reuters.com/reuters/topNews",         "category": "🌍 国际时事"},
     {"name": "AP News",               "url": "https://feeds.apnews.com/rss/apf-topnews",          "category": "🌍 国际时事"},
@@ -31,6 +37,28 @@ RSS_SOURCES = [
     {"name": "BBC 中文",              "url": "https://feeds.bbci.co.uk/zhongwen/simp/rss.xml",    "category": "🌍 国际时事"},
     {"name": "RFI 中文",              "url": "https://www.rfi.fr/cn/rss",                        "category": "🌍 国际时事"},
 ]
+
+IMPORTANT_KEYWORDS = {
+    # 用户最关注：美国科技、美股、AI、宏观影响资产价格的事件
+    "ai": 8, "artificial intelligence": 8, "openai": 8, "anthropic": 8, "nvidia": 9,
+    "microsoft": 7, "google": 7, "alphabet": 7, "meta": 7, "apple": 7, "amazon": 7,
+    "tesla": 7, "semiconductor": 7, "chip": 7, "data center": 7, "cloud": 6,
+    "earnings": 8, "stock": 6, "stocks": 6, "nasdaq": 8, "s&p": 8, "dow": 5,
+    "fed": 8, "federal reserve": 8, "rate": 6, "inflation": 7, "jobs report": 7,
+    "treasury": 5, "oil": 5, "crypto": 5, "bitcoin": 5,
+    "war": 6, "tariff": 6, "sanction": 6, "china": 5, "taiwan": 6, "ukraine": 5,
+    "major": 4, "breakthrough": 5, "launch": 4, "acquisition": 5, "lawsuit": 4,
+}
+
+CATEGORY_WEIGHTS = {
+    "📈 美股 & 商业": 12,
+    "🤖 AI & 科技": 10,
+    "💻 计算机 & 开发": 5,
+    "🌍 国际时事": 3,
+    "🔬 科学": 2,
+}
+
+MAX_ARTICLES_FOR_GROK = 90
 
 # ==================== 测试模式 ====================
 
@@ -110,6 +138,37 @@ def fetch_news():
 
     return articles, period, icon, now
 
+
+def score_article(article):
+    """给新闻打分：优先保留美国科技、美股、AI、宏观市场和重大国际事件。"""
+    text = f"{article['title']} {article['summary']} {article['source']}".lower()
+    score = CATEGORY_WEIGHTS.get(article["category"], 0)
+
+    for keyword, weight in IMPORTANT_KEYWORDS.items():
+        if keyword in text:
+            score += weight
+
+    # 同样重要的新闻，更新的排前面；时间未知不额外加分。
+    if article["pub_time"] != "时间未知":
+        score += 1
+
+    return score
+
+
+def prepare_articles_for_grok(articles):
+    """去重、排序并限制输入规模，避免模型被低价值新闻淹没。"""
+    deduped = []
+    seen_titles = set()
+    for article in articles:
+        key = article["title"].lower().strip()
+        if key in seen_titles:
+            continue
+        seen_titles.add(key)
+        deduped.append(article)
+
+    deduped.sort(key=score_article, reverse=True)
+    return deduped[:MAX_ARTICLES_FOR_GROK]
+
 # ==================== 调用 Grok ====================
 
 def call_grok(articles):
@@ -124,36 +183,40 @@ def call_grok(articles):
             article_text += f"   摘要：{a['summary']}\n"
         article_text += f"   链接：{a['link']}\n\n"
 
-    prompt = f"""你是一个新闻编辑助手，同时也是一个擅长发现商业机会的分析师。以下是从英文媒体抓取的最新新闻，请帮我完成两个任务：
+    prompt = f"""你是一个中文新闻编辑和美股/科技观察员。用户偏好：信息要全，但不要啰嗦；重点关注美国科技、美股、AI、半导体、大厂、宏观数据，同时也想知道当天全球重大事件。
 
-【任务一：新闻简报】
-1. 从中筛选出最有价值、最重要的15条（优先选择：AI/科技进展、国际重大事件、科技行业动态、科学发现）
-2. 过滤掉低价值内容（娱乐八卦、体育赛事、重复新闻只保留一条）
-3. 将标题和摘要翻译成中文
-4. 按以下四个分类整理输出：🤖 AI & 科技 / 🌍 国际时事 / 💻 计算机 & 开发 / 🔬 科学
-5. 每条新闻格式：
-- 中文标题
-  摘要：2-3句中文摘要，包含关键数据或影响
-  时间：发布时间
-  链接：原文URL
+请从下面新闻中去重、合并同类项，输出一份【精简但信息密度高】的中文晚报。
 
-【任务二：机会分析】
-在新闻简报结束后，另起一段，标题写"💡 今日机会分析"，然后：
-1. 从今日新闻中挖掘2-3个普通人可以利用的机会，包括但不限于：
-   - 信息差套利（某个产品/技术在国内外存在价格差或信息差）
-   - 趋势红利（某个领域正在爆发，可以提前布局）
-   - 倒卖/代购机会（某个产品因新闻热度可能涨价或断货）
-   - 副业机会（某个技能或工具需求正在上升）
-   - 投资方向（某个赛道值得关注）
-2. 每个机会格式：
-🔥 机会名称
-背景：用1句话说明相关新闻背景
-机会：具体说明怎么操作或利用
-风险：简要提示潜在风险
-3. 语气要务实接地气，面向普通人，不要空泛
+硬性要求：
+1. 全文控制在 1200-1800 个中文字左右，宁可少写废话，也不要遗漏真正的大事。
+2. 优先级：美国科技/AI/美股/半导体/大厂财报与监管 > 影响市场的宏观与地缘事件 > 全球重大时事 > 开发者/科学新闻。
+3. 不要逐条贴 URL；每条只保留来源名和时间。只有特别值得回看原文的，才在最后放“🔗 值得点开的原文”最多 3 个 URL。
+4. 每条新闻最多 1-2 句话，必须写清楚“发生了什么 + 为什么重要/可能影响什么”。
+5. 去掉娱乐、体育、低价值产品软文、小更新；重复新闻合并。
+6. 不要使用 Markdown 链接，不要输出多余解释。
 
-注意：所有链接直接输出原始URL，不要用Markdown格式包裹。
-只输出以上两个任务的内容，不要有多余的解释。
+固定输出格式：
+
+📌 今日主线
+- 3 条以内，每条一句话，总结今天最重要的方向。
+
+📈 美国科技 / 美股重点
+- 5-7 条。每条格式：标题：一句话说明事实；影响：对美股、公司、AI、半导体或市场情绪的意义。（来源 时间）
+
+🌍 全球大事速览
+- 4-6 条。只放真正重要的国际/宏观/地缘事件。
+
+💻 AI / 开发者 / 科学
+- 3-5 条。偏向技术趋势、工具、模型、科研突破，不要堆小新闻。
+
+💡 今日可行动关注
+- 最多 3 条。每条格式：
+  - 方向：具体关注什么
+    理由：为什么值得看
+    风险：可能错在哪里
+
+🔗 值得点开的原文
+- 最多 3 个 URL；如果没有特别值得点开的，就写“无”。
 
 新闻列表：
 {article_text}"""
@@ -167,8 +230,8 @@ def call_grok(articles):
         json={
             "model": "grok-4-1-fast-non-reasoning",
             "messages": [{"role": "user", "content": prompt}],
-            "max_tokens": 4000,
-            "temperature": 0.3,
+            "max_tokens": 2400,
+            "temperature": 0.2,
         },
         timeout=300,
     )
@@ -216,11 +279,13 @@ def main():
         return
 
     print("调用 Grok API 处理中...")
-    summary = call_grok(articles)
+    selected_articles = prepare_articles_for_grok(articles)
+    print(f"筛选后提交 {len(selected_articles)} 条高价值新闻给 Grok")
+    summary = call_grok(selected_articles)
 
     date_str = now.strftime("%m月%d日")
-    header = f"{icon} {date_str} {period}\n\n"
-    footer = f"\n\n⏱ 本期处理 {len(articles)} 条新闻 | Powered by Grok"
+    header = f"{icon} {date_str} {period}｜精简版\n\n"
+    footer = f"\n\n⏱ 抓取 {len(articles)} 条，筛选 {len(selected_articles)} 条 | Powered by Grok"
     full_message = header + summary + footer
 
     print("发送到 Telegram...")
