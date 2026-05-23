@@ -1,6 +1,8 @@
 name: Daily News Bot
 
 on:
+  push:
+    branches: [main]
   schedule:
     # GitHub Actions 的 cron 使用 UTC；12:07 UTC = 北京时间 20:07。
     # 避开整点触发，减少 GitHub Actions 高峰期延迟。
