@@ -281,7 +281,7 @@ def text_to_html(text, subject):
     for line in lines:
         s = line.rstrip()
         # 跳过重复标题行（已在 header 展示）
-        if s.endswith("｜精简版"):
+        if s.endswith(""):
             continue
         # 统计行单独处理
         if s.startswith("⏱"):
@@ -382,11 +382,11 @@ def main():
     summary = call_grok(selected_articles)
 
     date_str = now.strftime("%m月%d日")
-    header = f"{icon} {date_str} {period}｜精简版\n\n"
+    header = f"{icon} {date_str} {period}\n\n"
     footer = f"\n\n⏱ 抓取 {len(articles)} 条，筛选 {len(selected_articles)} 条 | Powered by Grok"
     full_message = header + summary + footer
 
-    subject = f"{icon} {date_str} {period}｜精简版"
+    subject = f"{icon} {date_str} {period}"
     errors = []
 
     try:
