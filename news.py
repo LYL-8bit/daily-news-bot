@@ -306,11 +306,27 @@ def main():
     footer = f"\n\n⏱ 抓取 {len(articles)} 条，筛选 {len(selected_articles)} 条 | Powered by Grok"
     full_message = header + summary + footer
 
-    print("发送到 Telegram...")
-    send_telegram(full_message)
-    print("发送邮件...")
     subject = f"{icon} {date_str} {period}｜精简版"
-    send_email(subject, full_message)
+    errors = []
+
+    try:
+        print("发送到 Telegram...")
+        send_telegram(full_message)
+        print("Telegram 发送成功")
+    except Exception as e:
+        print(f"Telegram 发送失败：{e}")
+        errors.append(f"Telegram: {e}")
+
+    try:
+        print("发送邮件...")
+        send_email(subject, full_message)
+        print("邮件发送成功")
+    except Exception as e:
+        print(f"邮件发送失败：{e}")
+        errors.append(f"Email: {e}")
+
+    if errors:
+        raise RuntimeError("部分渠道发送失败：" + " | ".join(errors))
     print("推送完成！")
 
 if __name__ == "__main__":
