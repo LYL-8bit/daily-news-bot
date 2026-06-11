@@ -1,5 +1,6 @@
 import feedparser
 import os
+import re
 import hashlib
 import smtplib
 from email.mime.text import MIMEText
@@ -15,19 +16,16 @@ ALERT_KEYWORDS = [
     # 重点人物
     "elon musk", "trump", "jerome powell", "sam altman", "justin sun",
 
-    # AI & 大模型（具体产品/公司，不放泛称 llm/chip）
+    # AI & 大模型
     "openai", "anthropic", "claude", "gemini", "grok", "chatgpt",
 
-    # 芯片 & 半导体（具体公司）
+    # 芯片 & 半导体（具体公司名，用单词边界防误匹配）
     "nvidia", "tsmc", "intel", "amd",
 
-    # 重点公司（马斯克系）
+    # 重点公司
     "tesla", "spacex",
 
-    # 美股指数
-    "nasdaq", "s&p 500", "s&p500", "dow jones",
-
-    # 美联储 & 宏观（高信号事件）
+    # 美联储 & 宏观
     "federal reserve", "fomc", "rate cut", "rate hike", "treasury yield",
 
     # 重大市场事件
@@ -37,7 +35,7 @@ ALERT_KEYWORDS = [
     "tariff", "sanctions", "trade war",
 
     # 加密
-    "bitcoin", "justin sun",
+    "bitcoin",
 
     # 宏观衰退
     "recession",
@@ -49,7 +47,6 @@ ALERT_SOURCES = [
     {"name": "CNBC Top News",   "url": "https://www.cnbc.com/id/100003114/device/rss/rss.html"},
     {"name": "CNBC Technology", "url": "https://www.cnbc.com/id/19854910/device/rss/rss.html"},
     {"name": "MarketWatch Top", "url": "https://feeds.content.dowjones.io/public/rss/mw_topstories"},
-    {"name": "Yahoo Finance",   "url": "https://finance.yahoo.com/news/rssindex"},
     {"name": "TechCrunch",      "url": "https://techcrunch.com/feed/"},
     {"name": "The Verge",       "url": "https://www.theverge.com/rss/index.xml"},
     {"name": "VentureBeat AI",  "url": "https://venturebeat.com/category/ai/feed/"},
@@ -97,7 +94,11 @@ def save_cache(all_hashes, existing_cache):
 
 def match_keywords(title, summary=""):
     text = f"{title} {summary}".lower()
-    return [kw for kw in ALERT_KEYWORDS if kw in text]
+    matched = []
+    for kw in ALERT_KEYWORDS:
+        if re.search(r'\b' + re.escape(kw) + r'\b', text):
+            matched.append(kw)
+    return matched
 
 # ==================== 发送预警邮件 ====================
 
