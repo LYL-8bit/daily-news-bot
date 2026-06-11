@@ -271,7 +271,7 @@ def text_to_html(text, subject):
     def linkify(s):
         return re.sub(
             r'(https?://[^\s\]）】）]+)',
-            r'<a href="\1" style="color:#58a6ff;word-break:break-all;">\1</a>',
+            r'<a href="\1" class="link" style="color:#0071e3;word-break:break-all;">\1</a>',
             s
         )
 
@@ -283,40 +283,58 @@ def text_to_html(text, subject):
             body_parts.append('<div style="height:6px"></div>')
         elif any(s.startswith(icon) for icon in SECTION_ICONS):
             body_parts.append(
-                f'<h2 style="margin:28px 0 10px;padding-bottom:8px;'
-                f'border-bottom:2px solid #30363d;font-size:17px;color:#e6edf3;">'
+                f'<h2 class="section-title" style="margin:28px 0 10px;padding-bottom:8px;'
+                f'border-bottom:2px solid #d1d5db;font-size:16px;color:#111827;font-weight:700;">'
                 f'{s}</h2>'
             )
         elif s.startswith("    ") or s.startswith("\t"):
             body_parts.append(
-                f'<p style="margin:3px 0 3px 36px;color:#8b949e;font-size:14px;">'
+                f'<p class="text-sub" style="margin:3px 0 3px 28px;color:#6b7280;font-size:14px;">'
                 f'{linkify(s.strip())}</p>'
             )
         elif s.startswith("- ") or s.startswith("• "):
             content = linkify(s[2:])
             body_parts.append(
-                f'<p style="margin:6px 0 6px 16px;color:#c9d1d9;">'
-                f'<span style="color:#58a6ff;margin-right:6px;">›</span>{content}</p>'
+                f'<p class="text-body" style="margin:7px 0 7px 12px;color:#374151;">'
+                f'<span style="color:#0071e3;margin-right:6px;font-weight:600;">›</span>{content}</p>'
             )
         else:
             body_parts.append(
-                f'<p style="margin:6px 0;color:#c9d1d9;">{linkify(s)}</p>'
+                f'<p class="text-body" style="margin:6px 0;color:#374151;">{linkify(s)}</p>'
             )
 
     body_html = "\n".join(body_parts)
     return f"""<!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#0d1117;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-  <div style="max-width:680px;margin:0 auto;">
-    <div style="background:#161b22;padding:24px 32px;border-bottom:3px solid #58a6ff;">
-      <div style="font-size:12px;color:#8b949e;margin-bottom:4px;">Daily News Bot</div>
-      <div style="font-size:22px;font-weight:700;color:#e6edf3;">{subject}</div>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <style>
+    @media (prefers-color-scheme: dark) {{
+      body {{ background:#111827 !important; }}
+      .wrapper {{ background:#1f2937 !important; }}
+      .header {{ background:#0f172a !important; }}
+      .header-label {{ color:#94a3b8 !important; }}
+      .header-title {{ color:#f1f5f9 !important; }}
+      .section-title {{ color:#e2e8f0 !important; border-color:#374151 !important; }}
+      .text-body {{ color:#d1d5db !important; }}
+      .text-sub {{ color:#9ca3af !important; }}
+      .link {{ color:#60a5fa !important; }}
+      .footer {{ background:#0f172a !important; color:#6b7280 !important; border-color:#374151 !important; }}
+    }}
+  </style>
+</head>
+<body style="margin:0;padding:16px 0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;">
+  <div class="wrapper" style="max-width:660px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+    <div class="header" style="background:#0f172a;padding:22px 28px;">
+      <div class="header-label" style="font-size:11px;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Daily News Bot</div>
+      <div class="header-title" style="font-size:21px;font-weight:700;color:#f1f5f9;">{subject}</div>
     </div>
-    <div style="padding:24px 32px;line-height:1.75;font-size:15px;">
+    <div style="padding:20px 28px;line-height:1.8;font-size:15px;">
       {body_html}
     </div>
-    <div style="padding:16px 32px;background:#161b22;color:#484f58;font-size:12px;text-align:center;border-top:1px solid #30363d;">
+    <div class="footer" style="padding:14px 28px;background:#f9fafb;color:#9ca3af;font-size:12px;text-align:center;border-top:1px solid #e5e7eb;">
       Powered by Grok 4.3 · daily-news-bot
     </div>
   </div>
