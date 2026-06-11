@@ -1,0 +1,48 @@
+name: Weekly & Monthly Summary
+
+on:
+  schedule:
+    - cron: '7 13 * * 0'  # 每周日 BJT 21:07（周报）
+    - cron: '7 13 1 * *'  # 每月1日 BJT 21:07（月报）
+  workflow_dispatch:
+    inputs:
+      type:
+        description: '生成类型'
+        required: true
+        default: 'weekly'
+        type: choice
+        options:
+          - weekly
+          - monthly
+
+jobs:
+  summary:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 拉取完整历史，确保 archive/ 文件都在
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖
+        run: pip install -r requirements.txt
+
+      - name: 运行周报 / 月报
+        env:
+          GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_RECIPIENTS: ${{ secrets.EMAIL_RECIPIENTS }}
+        run: |
+          if [ "${{ github.event.inputs.type }}" = "monthly" ] || [ "$(date +%d)" = "01" ]; then
+            python weekly.py --monthly
+          else
+            python weekly.py
+          fi

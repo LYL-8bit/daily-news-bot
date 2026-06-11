@@ -1,0 +1,39 @@
+name: Keyword Alert
+
+on:
+  schedule:
+    - cron: '0 0,4,8,12,16,20 * * *'  # 每4小时：UTC 0/4/8/12/16/20 = BJT 8/12/16/20/0/4
+  workflow_dispatch:
+
+jobs:
+  alert:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖
+        run: pip install -r requirements.txt
+
+      - name: 运行关键词预警
+        env:
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
+        run: python alert.py
+
+      - name: 提交预警缓存
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add alert_cache.txt
+          git diff --staged --quiet || (git pull --rebase && git commit -m "chore: alert cache $(date +%Y-%m-%dT%H:%M)" && git push)

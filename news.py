@@ -381,6 +381,13 @@ def main():
     print(f"筛选后提交 {len(selected_articles)} 条高价值新闻给 Grok")
     summary = call_grok(selected_articles)
 
+    # 保存每日存档供周报/月报使用
+    archive_date = now.strftime("%Y-%m-%d")
+    os.makedirs("archive", exist_ok=True)
+    with open(f"archive/{archive_date}.txt", "w", encoding="utf-8") as f:
+        f.write(summary)
+    print(f"存档已保存：archive/{archive_date}.txt")
+
     date_str = now.strftime("%m月%d日")
     header = f"{icon} {date_str} {period}\n\n"
     footer = f"\n\n⏱ 抓取 {len(articles)} 条，筛选 {len(selected_articles)} 条 | Powered by Grok"
