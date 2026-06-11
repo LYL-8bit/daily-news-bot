@@ -226,7 +226,7 @@ def call_grok(articles):
             "Content-Type": "application/json",
         },
         json={
-            "model": "grok-4-1-fast-non-reasoning",
+            "model": "grok-4.3",
             "messages": [{"role": "user", "content": prompt}],
             "max_tokens": 2400,
             "temperature": 0.2,
