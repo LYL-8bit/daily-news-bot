@@ -271,31 +271,40 @@ def text_to_html(text, subject):
     def linkify(s):
         return re.sub(
             r'(https?://[^\s\]）】）]+)',
-            r'<a href="\1" style="color:#0071e3;word-break:break-all;">\1</a>',
+            r'<a href="\1" style="color:#2563eb;word-break:break-all;">\1</a>',
             s
         )
 
     lines = text.split("\n")
     body_parts = []
+    stats_line = ""
     for line in lines:
         s = line.rstrip()
+        # 跳过重复标题行（已在 header 展示）
+        if s.endswith("｜精简版"):
+            continue
+        # 统计行单独处理
+        if s.startswith("⏱"):
+            stats_line = s
+            continue
         if not s:
             body_parts.append('<div style="height:8px"></div>')
         elif any(s.startswith(icon) for icon in SECTION_ICONS):
             body_parts.append(
-                f'<h2 style="margin:28px 0 10px;padding-bottom:8px;'
-                f'border-bottom:2px solid #e5e7eb;font-size:16px;color:#111827;font-weight:700;">'
+                f'<h2 style="margin:28px 0 12px;padding:10px 14px;'
+                f'border-left:4px solid #2563eb;background:#f0f7ff;'
+                f'border-radius:0 6px 6px 0;font-size:15px;color:#1e3a5f;font-weight:700;">'
                 f'{s}</h2>'
             )
         elif s.startswith("    ") or s.startswith("\t"):
             body_parts.append(
-                f'<p style="margin:3px 0 3px 28px;color:#6b7280;font-size:14px;">'
+                f'<p style="margin:3px 0 3px 24px;color:#6b7280;font-size:13px;line-height:1.6;">'
                 f'{linkify(s.strip())}</p>'
             )
         elif s.startswith("- ") or s.startswith("• "):
             content = linkify(s[2:])
             body_parts.append(
-                f'<p style="margin:7px 0 7px 0;color:#1f2937;">'
+                f'<p style="margin:8px 0;color:#1f2937;line-height:1.75;">'
                 f'🔹 {content}</p>'
             )
         else:
@@ -304,23 +313,28 @@ def text_to_html(text, subject):
             )
 
     body_html = "\n".join(body_parts)
+    stats_html = (
+        f'<p style="margin:0;color:#9ca3af;font-size:11px;">{stats_line}</p>'
+        if stats_line else ""
+    )
     return f"""<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
-<body style="margin:0;padding:16px 0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;">
-  <div style="max-width:660px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;">
-    <div style="background:#1e3a5f;padding:22px 28px;">
-      <div style="font-size:11px;color:#93c5fd;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Daily News Bot</div>
-      <div style="font-size:21px;font-weight:700;color:#f0f9ff;">{subject}</div>
+<body style="margin:0;padding:16px 0;background:#f0f4f8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;">
+  <div style="max-width:660px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.10);">
+    <div style="background:#1e3a5f;padding:24px 28px;">
+      <div style="font-size:11px;color:#93c5fd;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Daily News Bot</div>
+      <div style="font-size:22px;font-weight:700;color:#f0f9ff;line-height:1.3;">{subject}</div>
     </div>
-    <div style="padding:20px 28px;line-height:1.8;font-size:15px;">
+    <div style="padding:20px 28px 16px;line-height:1.8;font-size:15px;">
       {body_html}
     </div>
-    <div style="padding:14px 28px;background:#f9fafb;color:#9ca3af;font-size:12px;text-align:center;border-top:1px solid #e5e7eb;">
-      Powered by Grok 4.3 · daily-news-bot
+    <div style="padding:12px 28px 16px;border-top:1px solid #e5e7eb;text-align:center;">
+      {stats_html}
+      <p style="margin:4px 0 0;color:#d1d5db;font-size:11px;">Powered by Grok 4.3 · daily-news-bot</p>
     </div>
   </div>
 </body>
