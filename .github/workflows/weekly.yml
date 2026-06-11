@@ -14,6 +14,11 @@ on:
         options:
           - weekly
           - monthly
+      force:
+        description: '忽略存档数量限制（测试用）'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   summary:
@@ -41,8 +46,11 @@ jobs:
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
           EMAIL_RECIPIENTS: ${{ secrets.EMAIL_RECIPIENTS }}
         run: |
+          ARGS=""
           if [ "${{ github.event.inputs.type }}" = "monthly" ] || [ "$(date +%d)" = "01" ]; then
-            python weekly.py --monthly
-          else
-            python weekly.py
+            ARGS="--monthly"
           fi
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+          python weekly.py $ARGS

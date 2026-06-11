@@ -167,9 +167,12 @@ def main():
     archives = load_archives(days)
     print(f"找到 {len(archives)} 天存档")
 
-    if len(archives) < min_days:
+    force = "--force" in sys.argv
+    if len(archives) < min_days and not force:
         print(f"存档不足（{len(archives)} 天，需至少 {min_days} 天），跳过{label}")
         return
+    if force:
+        print(f"--force 模式，跳过存档数量检查（{len(archives)} 天）")
 
     now = datetime.now(BJT)
     print(f"调用 Grok 生成{label}...")
