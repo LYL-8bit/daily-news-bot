@@ -1,3 +1,3 @@
-feedparser
-requests
-python-dateutil
+feedparser==6.0.12
+requests==2.34.2
+python-dateutil==2.9.0.post0

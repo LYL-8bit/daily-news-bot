@@ -148,9 +148,10 @@ def score_article(article):
     text = f"{article['title']} {article['summary']} {article['source']}".lower()
     score = CATEGORY_WEIGHTS.get(article["category"], 0)
 
-    # 用词边界匹配，避免 "ai" 命中 said/again、"war" 命中 software、"dow" 命中 shutdown 等误判
+    # 词边界匹配避免 "ai" 命中 said、"war" 命中 software 等误判；
+    # 结尾可选 s 覆盖复数（rate→rates、chip→chips、data center→data centers）
     for keyword, weight in IMPORTANT_KEYWORDS.items():
-        if re.search(r'\b' + re.escape(keyword) + r'\b', text):
+        if re.search(r'\b' + re.escape(keyword) + r's?\b', text):
             score += weight
 
     # 同样重要的新闻，更新的排前面；时间未知不额外加分。
