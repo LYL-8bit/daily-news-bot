@@ -3,7 +3,9 @@ import requests
 import os
 import sys
 import smtplib
+import re
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from datetime import datetime, timezone, timedelta
 from dateutil import parser as dateparser
 
@@ -263,6 +265,65 @@ def send_telegram(text):
 
 # ==================== 发送邮件 ====================
 
+SECTION_ICONS = ("📌", "📈", "🌍", "💻", "💡", "🔗")
+
+def text_to_html(text, subject):
+    def linkify(s):
+        return re.sub(
+            r'(https?://[^\s\]）】）]+)',
+            r'<a href="\1" style="color:#58a6ff;word-break:break-all;">\1</a>',
+            s
+        )
+
+    lines = text.split("\n")
+    body_parts = []
+    for line in lines:
+        s = line.rstrip()
+        if not s:
+            body_parts.append('<div style="height:6px"></div>')
+        elif any(s.startswith(icon) for icon in SECTION_ICONS):
+            body_parts.append(
+                f'<h2 style="margin:28px 0 10px;padding-bottom:8px;'
+                f'border-bottom:2px solid #30363d;font-size:17px;color:#e6edf3;">'
+                f'{s}</h2>'
+            )
+        elif s.startswith("    ") or s.startswith("\t"):
+            body_parts.append(
+                f'<p style="margin:3px 0 3px 36px;color:#8b949e;font-size:14px;">'
+                f'{linkify(s.strip())}</p>'
+            )
+        elif s.startswith("- ") or s.startswith("• "):
+            content = linkify(s[2:])
+            body_parts.append(
+                f'<p style="margin:6px 0 6px 16px;color:#c9d1d9;">'
+                f'<span style="color:#58a6ff;margin-right:6px;">›</span>{content}</p>'
+            )
+        else:
+            body_parts.append(
+                f'<p style="margin:6px 0;color:#c9d1d9;">{linkify(s)}</p>'
+            )
+
+    body_html = "\n".join(body_parts)
+    return f"""<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0d1117;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <div style="max-width:680px;margin:0 auto;">
+    <div style="background:#161b22;padding:24px 32px;border-bottom:3px solid #58a6ff;">
+      <div style="font-size:12px;color:#8b949e;margin-bottom:4px;">Daily News Bot</div>
+      <div style="font-size:22px;font-weight:700;color:#e6edf3;">{subject}</div>
+    </div>
+    <div style="padding:24px 32px;line-height:1.75;font-size:15px;">
+      {body_html}
+    </div>
+    <div style="padding:16px 32px;background:#161b22;color:#484f58;font-size:12px;text-align:center;border-top:1px solid #30363d;">
+      Powered by Grok 4.3 · daily-news-bot
+    </div>
+  </div>
+</body>
+</html>"""
+
+
 def send_email(subject, text):
     sender = os.environ.get("EMAIL_SENDER")
     password = os.environ.get("EMAIL_PASSWORD")
@@ -272,10 +333,12 @@ def send_email(subject, text):
 
     recipients = [r.strip() for r in recipients_raw.split(",") if r.strip()]
 
-    msg = MIMEText(text, "plain", "utf-8")
+    msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
     msg["From"] = sender
     msg["To"] = ", ".join(recipients)
+    msg.attach(MIMEText(text, "plain", "utf-8"))
+    msg.attach(MIMEText(text_to_html(text, subject), "html", "utf-8"))
 
     with smtplib.SMTP_SSL("smtp.qq.com", 465) as server:
         server.login(sender, password)
