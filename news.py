@@ -90,12 +90,8 @@ def test_sources():
 
 def fetch_news():
     now = datetime.now(BJT)
-    if now.hour < 16:
-        period = "早报"
-        icon = "🌅"
-    else:
-        period = "晚报"
-        icon = "🌙"
+    period = "晚报"
+    icon = "🌙"
     cutoff = now - timedelta(hours=12)
 
     articles = []
