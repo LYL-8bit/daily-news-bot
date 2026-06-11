@@ -1,6 +1,7 @@
 import os
 import sys
 import re
+import html
 import requests
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -83,6 +84,8 @@ SECTION_ICONS = ("📅", "📈", "🤖", "🌍", "🔭")
 
 def text_to_html(text, subject):
     def linkify(s):
+        # 先转义 HTML 特殊字符（S&P、AT&T 的 & 和任何 < >），再做链接化
+        s = html.escape(s)
         return re.sub(
             r'(https?://[^\s\]）】）]+)',
             r'<a href="\1" style="color:#2563eb;word-break:break-all;">\1</a>',
@@ -99,7 +102,7 @@ def text_to_html(text, subject):
                 f'<h2 style="margin:28px 0 12px;padding:10px 14px;'
                 f'border-left:4px solid #2563eb;background:#f0f7ff;'
                 f'border-radius:0 6px 6px 0;font-size:15px;color:#1e3a5f;font-weight:700;">'
-                f'{s}</h2>'
+                f'{html.escape(s)}</h2>'
             )
         elif s.startswith("    ") or s.startswith("\t"):
             body_parts.append(
@@ -151,7 +154,7 @@ def send_email(subject, summary):
     msg.attach(MIMEText(summary, "plain", "utf-8"))
     msg.attach(MIMEText(text_to_html(summary, subject), "html", "utf-8"))
 
-    with smtplib.SMTP_SSL("smtp.qq.com", 465) as server:
+    with smtplib.SMTP_SSL("smtp.qq.com", 465, timeout=60) as server:
         server.login(sender, password)
         server.sendmail(sender, recipients, msg.as_string())
 

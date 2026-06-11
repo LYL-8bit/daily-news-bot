@@ -2,7 +2,7 @@ name: Keyword Alert
 
 on:
   schedule:
-    - cron: '0 0,4,8,12,16,20 * * *'  # 每4小时：UTC 0/4/8/12/16/20 = BJT 8/12/16/20/0/4
+    - cron: '7 0,4,8,12,16,20 * * *'  # 每4小时：UTC 0/4/8/.../20 的 :07 分；避开整点高峰减少延迟
   workflow_dispatch:
 
 jobs:
@@ -32,9 +32,11 @@ jobs:
         run: python alert.py
 
       - name: 提交预警缓存
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add alert_cache.txt
           git diff --staged --quiet && echo "缓存无变化" || git commit -m "chore: alert cache $(date +%Y-%m-%dT%H:%M)"
+          git pull --rebase origin HEAD
           git push origin HEAD

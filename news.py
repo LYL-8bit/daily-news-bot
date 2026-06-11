@@ -4,6 +4,8 @@ import os
 import sys
 import smtplib
 import re
+import html
+import socket
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime, timezone, timedelta
@@ -13,9 +15,12 @@ from dateutil import parser as dateparser
 
 BJT = timezone(timedelta(hours=8))
 
+# feedparser 底层用 urllib，无超时参数，靠全局 socket 超时兜底，防止单个源挂起拖死整个 job
+socket.setdefaulttimeout(30)
+
 RSS_SOURCES = [
-    {"name": "CNBC Top News",          "url": "https://www.cnbc.com/id/100003114/device/rss/rss.html",       "category": "📈 美股 & 商业"},
     {"name": "CNBC Technology",        "url": "https://www.cnbc.com/id/19854910/device/rss/rss.html",        "category": "📈 美股 & 商业"},
+    {"name": "CNBC Finance",           "url": "https://www.cnbc.com/id/10000664/device/rss/rss.html",        "category": "📈 美股 & 商业"},
     {"name": "MarketWatch Top",        "url": "https://feeds.content.dowjones.io/public/rss/mw_topstories",  "category": "📈 美股 & 商业"},
     {"name": "MarketWatch Pulse",      "url": "https://feeds.content.dowjones.io/public/rss/mw_marketpulse", "category": "📈 美股 & 商业"},
     {"name": "Yahoo Finance",          "url": "https://finance.yahoo.com/news/rssindex",                    "category": "📈 美股 & 商业"},
@@ -28,8 +33,6 @@ RSS_SOURCES = [
     {"name": "Wired",                 "url": "https://www.wired.com/feed/rss",                    "category": "🤖 AI & 科技"},
     {"name": "NYTimes Technology",     "url": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml", "category": "🤖 AI & 科技"},
     {"name": "IEEE Spectrum",         "url": "https://spectrum.ieee.org/feeds/feed.rss",          "category": "💻 计算机 & 开发"},
-    {"name": "Reuters",               "url": "https://feeds.reuters.com/reuters/topNews",         "category": "🌍 国际时事"},
-    {"name": "AP News",               "url": "https://feeds.apnews.com/rss/apf-topnews",          "category": "🌍 国际时事"},
     {"name": "BBC News",              "url": "https://feeds.bbci.co.uk/news/rss.xml",             "category": "🌍 国际时事"},
     {"name": "Al Jazeera",            "url": "https://www.aljazeera.com/xml/rss/all.xml",         "category": "🌍 国际时事"},
     {"name": "The Guardian World",    "url": "https://www.theguardian.com/world/rss",             "category": "🌍 国际时事"},
@@ -96,7 +99,8 @@ def fetch_news():
     now = datetime.now(BJT)
     period = "晚报"
     icon = "🌙"
-    cutoff = now - timedelta(hours=12)
+    # 每天仅推送一次，窗口取 24 小时，确保覆盖美股交易时段（北京时间 21:30~04:00 的隔夜新闻）
+    cutoff = now - timedelta(hours=24)
 
     articles = []
     for source in RSS_SOURCES:
@@ -144,8 +148,9 @@ def score_article(article):
     text = f"{article['title']} {article['summary']} {article['source']}".lower()
     score = CATEGORY_WEIGHTS.get(article["category"], 0)
 
+    # 用词边界匹配，避免 "ai" 命中 said/again、"war" 命中 software、"dow" 命中 shutdown 等误判
     for keyword, weight in IMPORTANT_KEYWORDS.items():
-        if keyword in text:
+        if re.search(r'\b' + re.escape(keyword) + r'\b', text):
             score += weight
 
     # 同样重要的新闻，更新的排前面；时间未知不额外加分。
@@ -269,6 +274,8 @@ SECTION_ICONS = ("📌", "📈", "🌍", "💻", "💡", "🔗")
 
 def text_to_html(text, subject):
     def linkify(s):
+        # 先转义 HTML 特殊字符（S&P、AT&T 的 & 和任何 < >），再做链接化，避免破坏页面结构
+        s = html.escape(s)
         return re.sub(
             r'(https?://[^\s\]）】）]+)',
             r'<a href="\1" style="color:#2563eb;word-break:break-all;">\1</a>',
@@ -294,7 +301,7 @@ def text_to_html(text, subject):
                 f'<h2 style="margin:28px 0 12px;padding:10px 14px;'
                 f'border-left:4px solid #2563eb;background:#f0f7ff;'
                 f'border-radius:0 6px 6px 0;font-size:15px;color:#1e3a5f;font-weight:700;">'
-                f'{s}</h2>'
+                f'{html.escape(s)}</h2>'
             )
         elif s.startswith("    ") or s.startswith("\t"):
             body_parts.append(
@@ -357,7 +364,7 @@ def send_email(subject, text):
     msg.attach(MIMEText(text, "plain", "utf-8"))
     msg.attach(MIMEText(text_to_html(text, subject), "html", "utf-8"))
 
-    with smtplib.SMTP_SSL("smtp.qq.com", 465) as server:
+    with smtplib.SMTP_SSL("smtp.qq.com", 465, timeout=60) as server:
         server.login(sender, password)
         server.sendmail(sender, recipients, msg.as_string())
 

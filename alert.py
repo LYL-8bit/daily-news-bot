@@ -3,12 +3,16 @@ import os
 import re
 import hashlib
 import smtplib
+import socket
 from email.mime.text import MIMEText
 from datetime import datetime, timezone, timedelta
 
 BJT = timezone(timedelta(hours=8))
 CACHE_FILE = "alert_cache.txt"
 CACHE_TTL_DAYS = 7
+
+# feedparser 无超时参数，靠全局 socket 超时兜底，防止单个源挂起拖死整个 job
+socket.setdefaulttimeout(30)
 
 # ==================== 关键词配置（大小写不敏感）====================
 
@@ -75,7 +79,7 @@ def load_cache():
                     pass
     return valid
 
-def save_cache(all_hashes, existing_cache):
+def save_cache(all_hashes):
     now_str = datetime.now(timezone.utc).isoformat()
     # 读取现有文件保留时间戳
     timestamps = {}
@@ -125,7 +129,7 @@ def send_alert_email(articles):
     msg["From"] = sender
     msg["To"] = alert_to
 
-    with smtplib.SMTP_SSL("smtp.qq.com", 465) as server:
+    with smtplib.SMTP_SSL("smtp.qq.com", 465, timeout=60) as server:
         server.login(sender, password)
         server.sendmail(sender, [alert_to], msg.as_string())
     print(f"预警邮件已发送：{len(articles)} 条")
@@ -167,7 +171,7 @@ def main():
     if triggered:
         send_alert_email(triggered)
 
-    save_cache(all_seen_hashes, cache)
+    save_cache(all_seen_hashes)
     print("缓存已更新")
 
 if __name__ == "__main__":

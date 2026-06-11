@@ -37,6 +37,7 @@ jobs:
         run: python news.py
 
       - name: 提交每日存档
+        if: always()  # 即使发送步骤部分失败，只要存档已生成就提交，保证周报数据连续
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
