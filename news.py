@@ -2,6 +2,8 @@ import feedparser
 import requests
 import os
 import sys
+import smtplib
+from email.mime.text import MIMEText
 from datetime import datetime, timezone, timedelta
 from dateutil import parser as dateparser
 
@@ -259,6 +261,26 @@ def send_telegram(text):
             print(f"Telegram发送失败：{resp.status_code}")
         resp.raise_for_status()
 
+# ==================== 发送邮件 ====================
+
+def send_email(subject, text):
+    sender = os.environ.get("EMAIL_SENDER")
+    password = os.environ.get("EMAIL_PASSWORD")
+    recipients_raw = os.environ.get("EMAIL_RECIPIENTS", "")
+    if not sender or not password or not recipients_raw:
+        raise ValueError("未找到邮件配置")
+
+    recipients = [r.strip() for r in recipients_raw.split(",") if r.strip()]
+
+    msg = MIMEText(text, "plain", "utf-8")
+    msg["Subject"] = subject
+    msg["From"] = sender
+    msg["To"] = ", ".join(recipients)
+
+    with smtplib.SMTP_SSL("smtp.qq.com", 465) as server:
+        server.login(sender, password)
+        server.sendmail(sender, recipients, msg.as_string())
+
 # ==================== 主程序 ====================
 
 def main():
@@ -286,6 +308,9 @@ def main():
 
     print("发送到 Telegram...")
     send_telegram(full_message)
+    print("发送邮件...")
+    subject = f"{icon} {date_str} {period}｜精简版"
+    send_email(subject, full_message)
     print("推送完成！")
 
 if __name__ == "__main__":
