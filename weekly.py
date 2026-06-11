@@ -15,7 +15,7 @@ ARCHIVE_DIR = "archive"
 def load_archives(days):
     now = datetime.now(BJT)
     archives = []
-    for i in range(days, 0, -1):
+    for i in range(days, -1, -1):  # 包含今天(i=0)，防止跨时区存档被漏掉
         date = (now - timedelta(days=i)).strftime("%Y-%m-%d")
         path = os.path.join(ARCHIVE_DIR, f"{date}.txt")
         if os.path.exists(path):
