@@ -12,20 +12,35 @@ CACHE_TTL_DAYS = 7
 # ==================== 关键词配置（大小写不敏感）====================
 
 ALERT_KEYWORDS = [
-    # AI & 大模型
-    "openai", "anthropic", "grok", "gemini", "claude", "gpt",
-    "llm", "large language model",
-    # 芯片 & 半导体
-    "nvidia", "tsmc", "intel", "amd", "arm", "semiconductor", "chip",
-    # 大厂
-    "apple", "google", "microsoft", "meta", "amazon", "tesla",
-    "alphabet", "spacex",
-    # 美股关键事件
-    "fed rate", "federal reserve", "fomc", "rate cut", "rate hike",
-    "earnings", "ipo", "acquisition", "merger", "bankruptcy", "layoff",
-    # 宏观
-    "recession", "inflation", "tariff", "sanction",
-    "oil price", "treasury yield",
+    # 重点人物
+    "elon musk", "trump", "jerome powell", "sam altman", "justin sun",
+
+    # AI & 大模型（具体产品/公司，不放泛称 llm/chip）
+    "openai", "anthropic", "claude", "gemini", "grok", "chatgpt",
+
+    # 芯片 & 半导体（具体公司）
+    "nvidia", "tsmc", "intel", "amd",
+
+    # 重点公司（马斯克系）
+    "tesla", "spacex",
+
+    # 美股指数
+    "nasdaq", "s&p 500", "s&p500", "dow jones",
+
+    # 美联储 & 宏观（高信号事件）
+    "federal reserve", "fomc", "rate cut", "rate hike", "treasury yield",
+
+    # 重大市场事件
+    "ipo", "acquisition", "merger", "bankruptcy", "layoffs", "market crash",
+
+    # 地缘 & 政策
+    "tariff", "sanctions", "trade war",
+
+    # 加密
+    "bitcoin", "justin sun",
+
+    # 宏观衰退
+    "recession",
 ]
 
 # ==================== 监控的 RSS 源（仅高优先级）====================
