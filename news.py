@@ -281,7 +281,7 @@ def text_to_html(text, subject):
     for line in lines:
         s = line.rstrip()
         # 跳过重复标题行（已在 header 展示）
-        if s.endswith(""):
+        if s == subject:
             continue
         # 统计行单独处理
         if s.startswith("⏱"):
