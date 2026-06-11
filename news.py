@@ -6,6 +6,7 @@ import smtplib
 import re
 import html
 import socket
+from collections import Counter
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime, timezone, timedelta
@@ -136,6 +137,7 @@ def fetch_news():
                         "link": link,
                         "summary": summary,
                         "pub_time": pub_str,
+                        "pub_dt": pub_time,  # 原始 UTC datetime（可能为 None），供时效衰减打分
                     })
         except Exception as e:
             print(f"抓取 {source['name']} 失败：{e}")
@@ -143,26 +145,56 @@ def fetch_news():
     return articles, period, icon, now
 
 
-def score_article(article):
+MAX_KEYWORD_HITS = 3      # 关键词加分只取最高的几个，避免堆砌 buzzword 刷分
+RECENCY_MAX_BONUS = 6     # 最新新闻的时效加分上限（24h 内线性衰减到 0）
+
+def score_article(article, now):
     """给新闻打分：优先保留美国科技、美股、AI、宏观市场和重大国际事件。"""
     text = f"{article['title']} {article['summary']} {article['source']}".lower()
     score = CATEGORY_WEIGHTS.get(article["category"], 0)
 
     # 词边界匹配避免 "ai" 命中 said、"war" 命中 software 等误判；
     # 结尾可选 s 覆盖复数（rate→rates、chip→chips、data center→data centers）
-    for keyword, weight in IMPORTANT_KEYWORDS.items():
-        if re.search(r'\b' + re.escape(keyword) + r's?\b', text):
-            score += weight
+    hits = [
+        weight
+        for keyword, weight in IMPORTANT_KEYWORDS.items()
+        if re.search(r'\b' + re.escape(keyword) + r's?\b', text)
+    ]
+    # 只累加命中里最高的几个，防止 "Nvidia AI chip earnings" 这类标题靠堆词拿高分
+    score += sum(sorted(hits, reverse=True)[:MAX_KEYWORD_HITS])
 
-    # 同样重要的新闻，更新的排前面；时间未知不额外加分。
-    if article["pub_time"] != "时间未知":
-        score += 1
+    # 时效衰减：越新的新闻加分越高，24 小时前衰减到 0；时间未知不加分
+    pub_dt = article.get("pub_dt")
+    if pub_dt:
+        hours_ago = (now - pub_dt).total_seconds() / 3600
+        score += max(0, round(RECENCY_MAX_BONUS * (1 - hours_ago / 24)))
 
     return score
 
 
-def prepare_articles_for_grok(articles):
+# 标题分词时忽略的高频虚词，避免它们污染事件聚类
+STOPWORDS = {
+    "the", "and", "for", "says", "say", "said", "new", "after", "over", "amid",
+    "into", "out", "how", "why", "what", "this", "that", "its", "his", "her",
+    "will", "has", "have", "are", "could", "would", "may", "get", "gets", "now",
+    "near", "than", "with", "from", "but", "not", "you", "your", "more", "they",
+    "their", "was", "were", "been", "about", "first", "two", "one", "off", "set",
+}
+
+# 跨源事件去重：同一主实体（当天高频出现的 token）最多保留几条，防单一事件刷屏
+MAX_PER_EVENT = 3
+EVENT_DF_THRESHOLD = 3  # token 当天至少出现在这么多篇标题里，才视为"热点实体"参与限流
+
+
+def significant_tokens(title):
+    """提取标题里的实词集合，用于跨源识别同一事件。"""
+    words = re.findall(r"[a-z0-9]+", title.lower())
+    return {w for w in words if len(w) > 2 and w not in STOPWORDS}
+
+
+def prepare_articles_for_grok(articles, now):
     """去重、排序并限制输入规模，避免模型被低价值新闻淹没。"""
+    # 第一步：完全相同标题去重
     deduped = []
     seen_titles = set()
     for article in articles:
@@ -170,10 +202,35 @@ def prepare_articles_for_grok(articles):
         if key in seen_titles:
             continue
         seen_titles.add(key)
+        article["_tokens"] = significant_tokens(article["title"])
         deduped.append(article)
 
-    deduped.sort(key=score_article, reverse=True)
-    return deduped[:MAX_ARTICLES_FOR_GROK]
+    # 统计每个 token 的当天文档频率（出现在多少篇标题里）
+    df = Counter()
+    for article in deduped:
+        for token in article["_tokens"]:
+            df[token] += 1
+
+    # 第二步：按分数从高到低排序
+    deduped.sort(key=lambda a: score_article(a, now), reverse=True)
+
+    # 第三步：跨源事件限流——每个热点实体最多保留 MAX_PER_EVENT 条（保留分数最高的）
+    selected = []
+    event_count = Counter()
+    for article in deduped:
+        crowded = [(df[t], t) for t in article["_tokens"] if df[t] >= EVENT_DF_THRESHOLD]
+        if crowded:
+            _, entity = max(crowded)  # 主实体 = 该标题里当天最热的 token
+            if event_count[entity] >= MAX_PER_EVENT:
+                continue
+            event_count[entity] += 1
+        selected.append(article)
+        if len(selected) >= MAX_ARTICLES_FOR_GROK:
+            break
+
+    for article in selected:
+        article.pop("_tokens", None)  # 清理临时字段
+    return selected
 
 # ==================== 调用 Grok ====================
 
@@ -385,7 +442,7 @@ def main():
         return
 
     print("调用 Grok API 处理中...")
-    selected_articles = prepare_articles_for_grok(articles)
+    selected_articles = prepare_articles_for_grok(articles, now)
     print(f"筛选后提交 {len(selected_articles)} 条高价值新闻给 Grok")
     summary = call_grok(selected_articles)
 
