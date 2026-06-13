@@ -1,0 +1,43 @@
+📌 今日主线
+- SpaceX完成史上最大IPO，股价涨11%，埃隆·马斯克成为全球首富，为OpenAI、Anthropic等AI公司IPO打开窗口。
+- 美国政府以国家安全为由，命令Anthropic暂停外国人使用Mythos和Fable顶级模型，公司已立即执行。
+- 美股IPO市场回暖，AI与科技股情绪受提振，但数据中心抗议已阻挡1300亿美元项目。
+
+📈 美国科技 / 美股重点
+- SpaceX IPO：史上最大规模IPO，股价首日涨11%，直接推动OpenAI和Anthropic等AI公司上市预期；提振整体科技股情绪。（NYTimes 06-13）
+- Jim Cramer：SpaceX成功IPO将为AI相关发行创造更积极市场背景，可能改善本周股市氛围。（CNBC 06-13）
+- Anthropic：美国政府下令限制外国人访问Mythos和Fable模型，Anthropic已全面禁用；安全警告反噬，商业部署受阻。（NYTimes 06-13）
+- Google：法院裁定公司需为AI Overviews生成的虚假信息承担法律责任，可能提高AI产品合规与诉讼成本。（Wired 06-13）
+- Meta：AI部门内部混乱，6500人团队士气低落，员工公开反对Zuckerberg公司范围AI黑客松计划。（Wired/TechCrunch 06-13）
+- Google起诉：中国“Outsider Enterprise”团伙用Gemini自动化诈骗，发送250万条短信，Google已提起诉讼。（Ars Technica 06-13）
+- 数据中心：今年抗议活动已阻挡1300亿美元项目，地方阻力可能延缓AI算力扩张节奏。（Ars Technica 06-13）
+
+🌍 全球大事速览
+- 美伊和平协议接近达成，双方已同意最终文本，但黎巴嫩战斗仍在继续。（Al Jazeera 06-13）
+- 特朗普抵达法国参加G7峰会，伊朗战争议题主导讨论。（NPR 06-13）
+- NATO评估欧洲防御替代方案，因美国计划减少对欧洲的飞机和军舰投入。（France 24 06-13）
+- 中国逮捕美国学者Min Zin，涉嫌间谍活动与危害国家安全。（NPR 06-13）
+- 富豪消费推高通胀：富裕阶层无视通胀继续购买奢侈品，可能干扰美联储控通胀努力。（MarketWatch 06-13）
+
+💻 AI / 开发者 / 科学
+- 法院判定AI系统设计与运营方需对生成内容负责，可能迫使OpenAI、Google等调整全球部署策略。（Wired 06-13）
+- Anthropic安全警告导致模型被政府叫停，暴露AI公司与监管博弈风险，行业或收紧对外开放。（TechCrunch 06-13）
+- 乌克兰首次测试全自主AI无人机用于作战，标志AI在军事领域的快速落地。（Ars Technica 06-13）
+- Jeff Bezos新创Prometheus聚焦物理AI，已获巨额融资，与具身智能赛道竞争加剧。（Ars Technica 06-13）
+- Mistral传闻以200亿欧元估值融资30亿欧元，欧洲AI独角兽扩张加速。（TechCrunch 06-13）
+
+💡 今日可行动关注
+- 方向：跟踪SpaceX与Anthropic后续监管与上市进展
+  理由：IPO成功可能带动AI板块估值上行
+  风险：国家安全审查收紧导致海外业务受限
+- 方向：关注数据中心抗议与地方政策变化
+  理由：直接影响AI算力扩张速度与相关半导体需求
+  风险：抗议扩大导致项目延误超预期
+- 方向：观察G7峰会与美伊协议进展
+  理由：地缘缓和可能提振风险资产情绪
+  风险：协议破裂引发油价与股市波动
+
+🔗 值得点开的原文
+- https://www.nytimes.com/2026/06/12/technology/spacex-ipo-elon-musk.html
+- https://www.nytimes.com/2026/06/12/technology/anthropic-mythos-fable5-blocked.html
+- https://arstechnica.com/tech-policy/2026/06/130-billion-in-data-center-projects-blocked-by-protests-so-far-this-year/
