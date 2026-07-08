@@ -1,0 +1,47 @@
+📌 今日主线
+- 美伊冲突升级，特朗普宣布停火结束，油价大涨，美股三大指数集体下跌。
+- OpenAI获监管批准公开发布GPT-5.6模型，结束此前政府限制；SambaNova以110亿美元估值完成新一轮融资。
+- 三星业绩不及AI预期引发芯片股抛售，Cramer称AI硬件领导地位或出现轮动。
+
+📈 美国科技 / 美股重点
+- OpenAI获美监管批准公开推出GPT-5.6模型：结束此前政府要求的使用限制，Anthropic此前已恢复模型访问。（CNBC 07-08）
+- 影响：前沿模型竞争加速，利好OpenAI生态，短期提振AI板块情绪。
+- SambaNova完成10亿美元融资，估值达110亿美元：由General Atlantic领投，AI芯片初创公司持续挑战Nvidia。（TechCrunch 07-08）
+- 影响：半导体多元化预期升温，Nvidia竞争压力加大，利好相关初创估值。
+- 三星业绩低于AI高预期，芯片股集体回调：股价此前已涨145%，Jim Cramer称可能标志AI硬件领导权转移。（CNBC 07-08）
+- 影响：市场出现AI硬件与软件/应用股轮动，滞涨科技股反弹。
+- 苹果与Broadcom达成超300亿美元协议：扩大美国芯片制造合作，同时开始测试长鑫存储芯片用于中国市场设备。（CNBC 07-08）
+- 影响：苹果供应链本土化与成本优化并行，利好Broadcom及美半导体制造。
+- Meta推出Muse Image图像生成模型：覆盖Instagram、WhatsApp等平台，目标吸引创作者与广告商。（NYTimes 07-08）
+- 影响：Meta在AI内容工具赛道追赶，利好广告与订阅业务。
+- 亚马逊计划发行至少250亿美元债券：不再2026年内额外发债，用于支撑AI大规模投资。（CNBC 07-07）
+- 影响：AI资本开支压力显现，科技巨头融资需求上升。
+
+🌍 全球大事速览
+- 美伊冲突升级，特朗普称停火“结束”，油价两月最大涨幅；道指、标普、纳指全线下挫。（Yahoo Finance 07-08）
+- IMF警告伊朗战争将给美国留下通胀伤疤，影响延续至2027年。（MarketWatch 07-08）
+- 美联储会议纪要将显示内部对利率政策的“家庭争执”，可能拖延更久。（CNBC 07-08）
+- 中国警告Anthropic Claude Code特定版本存在后门风险，可向远程服务器发送敏感信息。（CNBC 07-08）
+- 美国国会调查中国AI模型在美企业使用情况，关注数据安全风险。（CNBC 07-08）
+
+💻 AI / 开发者 / 科学
+- 法国AI初创ZML发布免费ZML/LLMD工具：可加速跨多AI芯片的推理速度，获Yann LeCun支持。（TechCrunch 07-08）
+- 微软加大自研模型使用比例：加入AI成本削减趋势，减少对外部模型依赖。（TechCrunch 07-08）
+- 中国DeepSeek因美国出口管制，计划自研芯片以降低对Nvidia和华为依赖。（Ars Technica 07-08）
+- Meta Muse Image模型支持从Instagram用户照片生成AI图像：引发隐私与使用争议。（The Verge 07-08）
+
+💡 今日可行动关注
+- 方向：关注油价与中东局势后续
+  理由：美伊冲突直接推高能源成本，影响通胀与美联储路径
+  风险：若冲突快速降级，油价回落可能带动市场反弹
+- 方向：跟踪AI芯片股轮动
+  理由：三星业绩引发硬件股回调，软件与应用环节或获青睐
+  风险：Nvidia等龙头若快速反弹，轮动逻辑可能失效
+- 方向：留意美联储纪要与利率预期
+  理由：内部分歧可能延长政策不确定性，影响成长股估值
+  风险：若纪要偏鹰派，科技股短期承压加剧
+
+🔗 值得点开的原文
+https://www.cnbc.com/2026/07/08/openai-expanding-gpt-5point6-ai-model-release-ending-government-limits.html
+https://finance.yahoo.com/markets/stocks/live/stock-market-today-wednedsay-july-8-dow-sp-nasdaq-fall-oil-rise-230111117.html
+https://www.cnbc.com/2026/07/07/chip-stocks-ai-selloff-samsung.html
