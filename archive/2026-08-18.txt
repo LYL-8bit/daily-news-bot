@@ -1,0 +1,43 @@
+📌 今日主线
+- 美股期货因美伊紧张与国债收益率跳升而下跌，科技与芯片股领跌。
+- Anthropic年化营收跑率达650亿美元，AI融资与数据中心需求持续爆发。
+- Nvidia为OpenAI俄亥俄数据中心提供1050亿美元融资，AI资本壁垒凸显。
+
+📈 美国科技 / 美股重点
+- Nvidia支持OpenAI俄亥俄数据中心1050亿美元融资：公司从芯片主导转向资本优势，AI基础设施扩张加速。（CNBC 08-18）
+- 市场期货走低：道指、标普、纳指期货受美伊紧张和收益率上升拖累，Nvidia、Micron等芯片股下跌。（Yahoo Finance 08-18）
+- Anthropic年化营收达650亿美元：较去年增长约7倍，显示生成式AI需求强劲，可能推高估值与IPO预期。（CNBC 08-18）
+- Groq融资3.5亿美元转向neocloud：估值35亿美元，AI云服务扩张将增加Nvidia GPU需求。（TechCrunch 08-18）
+- 基金经理罕见看多股市：BofA调查显示投资者对AI资本支出和地缘风险容忍度高。（MarketWatch 08-18）
+- OpenAI推出青少年专用ChatGPT模式：整合安全功能，应对监管与公众对AI影响未成年人的担忧。（NYTimes 08-18）
+- ECB警告AI驱动市场回调：高估值或因AI而被高估，历史显示可能出现大幅回落。（CNBC 08-18）
+
+🌍 全球大事速览
+- 美伊紧张升级：直接拖累美股期货，地缘政治风险推高避险情绪。
+- 乌克兰向莫斯科地区发射超600架无人机：俄乌冲突进一步升级，欧洲安全局势紧张。
+- Meta面临儿童安全联邦审判：多州索赔2000亿美元，可能导致巨额罚款和平台规则重塑。（NYTimes 08-18）
+- 美国30年期国债收益率升至2007年以来最高：全球债市抛售，通胀与债务供给担忧加剧。（MarketWatch 08-18）
+- 巴西总统称亚马逊石油为“未来通行证”：能源政策转向，可能影响全球油价与气候议程。
+
+💻 AI / 开发者 / 科学
+- 人们真实使用AI方式仍缺乏独立数据：Anthropic和OpenAI报告选择性发布，难以验证实际应用场景。（MIT Technology Review 08-18）
+- AI递归自我改进或不会快速到来：当前LLM在代码、合成数据和芯片优化上仍有明显局限，爆炸式进步预测或延后。（MIT Technology Review 08-18）
+- Amazon销毁稀有书籍训练AI：为获取独特离线数据，引发文化遗产保护争议。（TechCrunch 08-18）
+- 中国Z.ai发布开源模型：可能用于网络安全防御或被黑客利用，引发西方专家警惕。（Wired 08-18）
+- Higgsfield融资4亿美元：估值54亿美元，AI图像视频生成工具快速扩张。
+
+💡 今日可行动关注
+- 方向：美债收益率突破水平
+  理由：10年期若持续攀升，可能触发科技股获利了结。
+  风险：AI资本支出乐观情绪或继续支撑估值。
+- 方向：Anthropic与AI独角兽IPO动态
+  理由：预测市场显示其可能成2026最大IPO，营收增速提供参照。
+  风险：监管收紧或竞争加剧导致估值波动。
+- 方向：Nvidia数据中心融资落地
+  理由：1050亿美元规模反映真实需求，利好供应链。
+  风险：竞争对手份额上升或延迟项目。
+
+🔗 值得点开的原文
+- https://www.cnbc.com/2026/08/17/nvidia-financing-open-ai-data-center-ohio.html
+- https://www.cnbc.com/2026/08/17/anthropic-says-annualized-revenue-climbed-to-65-billion-in-july.html
+- https://www.marketwatch.com/story/u-s-30-year-treasury-yield-hits-highest-level-since-2007-amid-global-bond-sell-off-f8dfb1df
