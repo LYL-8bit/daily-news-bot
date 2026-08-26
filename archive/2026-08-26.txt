@@ -1,0 +1,44 @@
+📌 今日主线
+- 7月PCE通胀再次超预期上升，美联储可能在9月重启加息讨论，市场静待今晚Nvidia财报验证AI需求。
+- Bill Gates公开表达对AI失控的深度担忧，从乐观转向悲观，叠加OpenAI等多家人事动荡，AI监管与安全议题升温。
+- 美国对伊朗扩大制裁至黄金、加密与航空领域，台当局起诉Nvidia等员工走私高端AI服务器，地缘科技摩擦加剧。
+
+📈 美国科技 / 美股重点
+- 7月PCE通胀环比上升且远高于美联储目标：可能推动9月加息预期，压制短期美股风险偏好。（MarketWatch 08-26）
+- 道指期货与标普期货盘前持稳，市场静待今晚通胀数据与Nvidia财报：若AI需求超预期，半导体板块或延续反弹。（Yahoo Finance 08-26）
+- 标普500年内有望再创新高，但巴克莱警告宏观波动、AI资本供给与中期选举风险：高估值板块回调压力增大。（MarketWatch 08-26）
+- Jim Cramer点名四只“不可或缺”存储股，称AI需求激增下投资者“不能错过”：利好美光、SK海力士等内存产业链。（Yahoo Finance 08-26）
+- 网络安全股被市场定价为AI高增长标的，财报季或出现剧烈波动：若订单不及预期，板块估值面临修正。（Yahoo Finance 08-26）
+- OpenAI数据中心负责人Chris Malone离职，此前已有多名高管出走：反映公司基础设施扩张压力与组织调整。（CNBC 08-26）
+- Zoom下调指引，消费端需求放缓拖累业绩：远程办公复苏不及预期，软件股情绪受压。（Yahoo Finance 08-26）
+
+🌍 全球大事速览
+- 美国威胁对任何与伊朗黄金、数字资产、航空及航运相关的实体实施制裁：扩大对中东供应链的金融压力。（NYTimes 08-26）
+- 加拿大对约200亿美元美国商品实施报复性关税，涵盖钢铁、乳制品与农业设备：美加贸易战升级，影响北美供应链。（France 24 08-26）
+- 台湾起诉9人走私高端AI服务器至中国，涉Nvidia与Super Micro员工：美中AI出口管制再添执法案例。（The Guardian 08-26）
+- 尼泊尔-西藏边境突发山洪泥石流，已致至少22人死亡、数百人失踪：区域基础设施与跨境贸易短期受阻。（France 24 08-26）
+- 中国正加速构建CIPS等美元替代支付体系，以对冲美国制裁风险：长期可能削弱美元在亚洲贸易中的主导地位。（CNBC 08-26）
+- 惠普与被美列入黑名单的华为达成WiFi技术授权合作：显示部分美国企业仍在绕道使用中国技术。（CNBC 08-26）
+
+💻 AI / 开发者 / 科学
+- Anthropic为Claude Cowork新增跨聊天共享记忆功能：用户无需重复输入项目上下文，显著提升企业级AI代理连续性。（TechCrunch 08-26）
+- Stability AI完成7600万美元新一轮融资，累计融资达2.32亿美元：Stable Diffusion图像模型持续获得资本支持。（TechCrunch 08-26）
+- IBM发布Granite 4.2系列本地大模型，强调代理能力和企业可预测部署：推动本地LLM在隐私敏感场景的应用。（Ars Technica 08-26）
+- 以色列初创Irregular对OpenAI、Anthropic和Meta的AI安全测试出现失控：暴露当前大模型红队测试的脆弱性。（NYTimes 08-26）
+- Waymo宣布2027年进入德国市场，提供无人驾驶乘车服务：Alphabet Robotaxi业务首次拓展至欧洲第三国。（CNBC 08-26）
+
+💡 今日可行动关注
+- 方向：今晚Nvidia财报及指引
+  理由：市场将通过数据中心收入验证AI资本开支是否持续高增，直接影响半导体与AI板块短期走势
+  风险：若指引低于预期，高估值AI股可能出现快速回调
+- 方向：美联储Jackson Hole会议与9月议息前信号
+  理由：粘性通胀可能改变降息路径，影响成长股与利率敏感板块估值
+  风险：政策表述若偏鹰派，短期美债收益率上行压力加大
+- 方向：美中AI出口管制与供应链动态
+  理由：台湾走私案与华为合作显示管制执行与企业应对并存，关注相关半导体公司订单与合规风险
+  风险：新制裁或导致短期供应链扰动，但中长期加速国产替代
+
+🔗 值得点开的原文
+https://www.marketwatch.com/story/u-s-inflation-rises-in-july-and-stays-well-above-feds-target-b4e6109c
+https://www.theverge.com/ai-artificial-intelligence/984923/bill-gates-is-deeply-worried-about-ai-and-hes-no-longer-staying-quiet
+https://www.theguardian.com/technology/2026/aug/25/taiwan-china-ai-smugglers
