@@ -1,0 +1,43 @@
+📌 今日主线
+- 美股大幅反弹，道指涨近600点，市场押注美联储降息概率上升，科技股领涨。
+- Nvidia推进对Hugging Face的129亿美元收购，AI基础设施与生态整合加速。
+- AI数据中心供应链中国依赖风险凸显，美国可能进一步收紧设备限制。
+
+📈 美国科技 / 美股重点
+- Nvidia拟收购Hugging Face：将扩大开发者对AI工具的访问，强化其在AI软件栈的布局；影响：利好Nvidia长期生态壁垒。（CNBC 09-03）
+- Broadcom给出2028年强劲盈利指引，AI实验室需求驱动：尽管当季营收指引偏弱，但AI相关业务斜率明确；影响：支撑半导体板块估值。（CNBC 09-03）
+- Snowflake股价单日涨22%：AI编码助手推动销售增长超预期；影响：验证AI工具对企业软件的直接拉动，提振软件板块情绪。（CNBC 09-03）
+- Palo Alto Networks业绩超预期并持续收购：AI安全检测需求旺盛，股价年内翻倍；影响：网络安全成为AI基建配套热点。（CNBC 09-03）
+- Google 9月开局获AI模型推动：结束连续月度下跌，AI搜索与模型进展提供支撑；影响：缓解市场对搜索广告疲软的担忧。（CNBC 09-03）
+- Meta获新AI催化剂：推动股价向历史高点靠近；影响：大厂AI资本开支仍在加速，利好广告与云业务。（Yahoo Finance 09-04）
+- Tesla预告Cybercab无方向盘/踏板更新：Robotaxi时间表重启；影响：自动驾驶概念短期情绪回暖。（CNBC 09-03）
+
+🌍 全球大事速览
+- G20就AI政策与出口依赖表态，中国反击称其推动保护主义，同时反对美伊制裁与欧贸易措施；影响：贸易摩擦风险上升。（CNBC 09-03）
+- 美国经济8月扩张速度为半年最快，尽管通胀与关税压力仍在；影响：支撑美联储政策空间判断，但高收益率可能持续。（MarketWatch 09-03）
+- 纽约联储主席Williams称美债收益率上升反映经济强劲前景；影响：市场对降息节奏的乐观预期或面临修正。（CNBC 09-03）
+- 乌克兰转向打击俄罗斯太空基础设施；影响：地缘冲突向高价值战略资产扩散。（Al Jazeera 09-03）
+- 美国能源企业主导委内瑞拉数十亿美元油气协议；影响：能源供应与地缘格局出现新变量。（France 24 09-03）
+
+💻 AI / 开发者 / 科学
+- Nvidia发布免费工具PAIR：可将闲置家用电脑组成个人AI推理集群，支持Ollama等本地模型；影响：降低AI算力门槛，利好消费级GPU需求。（The Verge 09-04）
+- OpenAI新“recurrent depth”推理技术引发安全专家担忧；影响：前沿模型能力迭代速度可能超出现有对齐框架。（TechCrunch 09-03）
+- 美国政府在版权诉讼中支持OpenAI立场，强调维护美国AI全球竞争力；影响：降低大模型训练的法律不确定性。（TechCrunch 09-03）
+- Anthropic蒸馏攻击转向暗网，中国相关担忧加剧；影响：AI模型安全与供应链国家风险同步上升。（CNBC 09-03）
+- Google与Fervo达成400MW增强型地热协议，可扩展至1GW；影响：为AI数据中心提供稳定低碳电力选项。（TechCrunch 09-03）
+
+💡 今日可行动关注
+- 方向：跟踪Nvidia收购Hugging Face进展及监管反馈
+  理由：交易将重塑AI开发者工具市场，直接影响Nvidia软件收入占比
+  风险：反垄断审查或估值分歧导致交易延期
+- 方向：关注Broadcom与Palo Alto Networks后续财报指引中的AI订单数据
+  理由：两家公司分别代表半导体与安全领域的AI直接受益
+  风险：宏观收益率上升可能压制高估值科技股
+- 方向：观察美国对AI数据中心中国供应链的限制动向
+  理由：可能引发光学、电源设备进口替代与成本上升
+  风险：短期供应链扰动被市场提前定价
+
+🔗 值得点开的原文
+- https://www.cnbc.com/2026/09/03/nvidia-agrees-to-buy-hugging-face-for-almost-13-billion-ai-expansion.html
+- https://www.cnbc.com/2026/09/02/broadcom-avgo-q3-earnings-report-2026.html
+- https://finance.yahoo.com/markets/live/stock-market-today-thursday-september-3-dow-sp-500-nasdaq-futures-081525933.html
